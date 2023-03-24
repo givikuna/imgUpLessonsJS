@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <style>
+        body {
+            background-color: white;
+        }
+    </style>
+
+    <script>
+        //LOGIC:
+
+        /*
+            // DONE //make a data.json file in it write the names of the images;
+            // DONE //when the body loads the image array will be sent to the index.htm from index.js and saved in imageArray,
+            // DONE //the length of the array will be measured and accordingly the src=null images will be placed in the body using fillBody();
+            //press addNew button to add a new image, it'll take you to the login.htm where you will add the image in it,
+            //the image will be sent to image.js and downloaded to the up_img folder by a numbe chosen by the id of the image,
+            //the image will be added into the data.json array,
+            //imageArray will be updated and fillBody() will be ran;
+        */
+
+
+        //GLOBAL VARIBALES:
+
+        var xhttp = new XMLHttpRequest();
+        var imageArray = [];
+
+        //FUNCTIONS:
+        function bodyOnload() { //BODY ONLOAD FUNCTION;
+            var url = "http://localhost:8091/?";
+
+            xhttp.open("GET", url, true);
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        imageArray = JSON.parse(this.responseText);
+                        fillBody();
+                    } else {
+                        alert("ERROR");
+                    }
+                }
+            };
+            xhttp.send();
+        }
+
+        function addNew() { //ADD NEW FUNCTION;
+            //
+        }
+
+        function fillBody() { //FILL BODY FUNCTION;
+            document.getElementById("imageDiv").innerHTML = "";
+            var up_img = "up_img";
+            var paraphraphParameter = document.createElement("p");
+            for (var i = 0; i < imageArray.length; i++) {
+                var imageCode = "<input type=\"image\" id=\"image" + i.toString() + "\" src=\"http://localhost:8092/?img=" + imageArray[i].img + "&type=" + up_img + "\" length=\"300\" width=\"300\"><br>";
+                paraphraphParameter.innerHTML = paraphraphParameter.innerHTML + imageCode;
+            }
+            document.getElementById('imageDiv').appendChild(paraphraphParameter);
+        }
+    </script>
+
+</head>
+
+<body onload="bodyOnload()">
+    <a href="http://localhost:8090/?type=login"><input type="image" length="20" width="50"
+            src="http://localhost:8092/?img=add-icon.png&type=content" onclick="addNew()"></a>
+    <!-- <input type="button" value="add new" onclick=addNew()> -->
+
+    <div id="imageDiv">
+        <!-- // -->
+    </div>
+</body>
+
+</html>
